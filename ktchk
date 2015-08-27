@@ -1,1 +1,1 @@
-java -cp ./target/kerberos-tools-0.0.1.jar com.ecosystemsoftware.security.kerberos.KeyTabCheck
+java -cp ./target/kerberos-tools-0.0.1.jar com.ecosystemsoftware.security.kerberos.KeyTabCheck ./krb.properties

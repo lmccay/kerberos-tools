@@ -32,30 +32,16 @@ public class KeyTabCheck {
     final Krb5LoginModule krb5LoginModule = new Krb5LoginModule();
     final Map<String,String> optionMap = new HashMap<String,String>();
 
-    if (propertiesFileName == null) {
-      // optionMap.put("ticketCache", "/tmp/krb5cc_510");
-      optionMap.put("keyTab", "/etc/security/keytabs/hdfs.headless.keytab");
-      optionMap.put("principal", "hdfs-ljm"); // default realm
-
-      optionMap.put("doNotPrompt", "true");
-      optionMap.put("refreshKrb5Config", "true");
-      optionMap.put("useTicketCache", "true");
-      optionMap.put("renewTGT", "true");
-      optionMap.put("useKeyTab", "true");
-      optionMap.put("storeKey", "false");
-      optionMap.put("isInitiator", "true");
-    } else {
-      File f = new File(propertiesFileName);
-      System.out.println("======= loading property file ["+f.getAbsolutePath()+"]");
-      Properties p = new Properties();
-      InputStream is = new FileInputStream(f);
-      try {
-        p.load(is);
-      } finally {
-        is.close();
-      }
-      optionMap.putAll((Map)p);
+    File f = new File(propertiesFileName);
+    System.out.println("======= loading property file ["+f.getAbsolutePath()+"]");
+    Properties p = new Properties();
+    InputStream is = new FileInputStream(f);
+    try {
+      p.load(is);
+    } finally {
+      is.close();
     }
+    optionMap.putAll((Map)p);
     optionMap.put("debug", "true"); // switch on debug of the Java implementation
 
     krb5LoginModule.initialize(subject, null, new HashMap<String,String>(), optionMap);
@@ -70,8 +56,8 @@ public class KeyTabCheck {
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println("A property file with the login context can be specified as the 1st and the only paramater.");
-    final KeyTabCheck kt = new KeyTabCheck();
-    kt.loginImpl(args.length == 0 ? null : args[0]);
+    final KeyTabCheck ktchk = new KeyTabCheck();
+    // propsfile
+    ktchk.loginImpl(args[1]);
   }
 }
