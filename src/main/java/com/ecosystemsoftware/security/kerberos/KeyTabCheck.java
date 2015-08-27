@@ -58,6 +58,6 @@ public class KeyTabCheck {
   public static void main(String[] args) throws Exception {
     final KeyTabCheck ktchk = new KeyTabCheck();
     // propsfile
-    ktchk.loginImpl(args[1]);
+    ktchk.loginImpl(args[0]);
   }
 }
