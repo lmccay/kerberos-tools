@@ -20,11 +20,8 @@ import com.sun.security.auth.module.Krb5LoginModule;
 public class KeyTabCheck {
 
   private void loginImpl(final String propertiesFileName) throws Exception {
-    System.out.println("NB: system property to specify the krb5 config: [java.security.krb5.conf]");
-    System.setProperty("java.security.krb5.conf", "/etc/krb5.conf");
-
     System.out.println(System.getProperty("java.version"));
-
+    System.setProperty("java.security.krb5.conf", "/etc/krb5.conf");
     System.setProperty("sun.security.krb5.debug", "true");
 
     final Subject subject = new Subject();
@@ -33,7 +30,7 @@ public class KeyTabCheck {
     final Map<String,String> optionMap = new HashMap<String,String>();
 
     File f = new File(propertiesFileName);
-    System.out.println("======= loading property file ["+f.getAbsolutePath()+"]");
+    System.out.println("======= property file ["+f.getAbsolutePath()+"]");
     Properties p = new Properties();
     InputStream is = new FileInputStream(f);
     try {
@@ -46,6 +43,7 @@ public class KeyTabCheck {
 
     krb5LoginModule.initialize(subject, null, new HashMap<String,String>(), optionMap);
 
+    System.out.println("======= starting JAAS login...");
     boolean loginOk = krb5LoginModule.login();
     System.out.println("======= login:  " + loginOk);
 
@@ -58,6 +56,11 @@ public class KeyTabCheck {
   public static void main(String[] args) throws Exception {
     final KeyTabCheck ktchk = new KeyTabCheck();
     // propsfile
-    ktchk.loginImpl(args[0]);
+    if (args.length == 0) {
+      ktchk.loginImpl("./krb.properties");
+    }
+    else {
+      ktchk.loginImpl(args[0]);
+    }
   }
 }
